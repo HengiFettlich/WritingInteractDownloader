@@ -46,7 +46,7 @@ def download_and_check(uri: str):
             response = s.get(uri).text
         # in case of SSL exceptions or something else, log these
         except Exception as e:
-            with open(base + "/log.txt", "a") as l_out:
+            with open(base + "/log.txt", "a", encoding="utf-8") as l_out:
                 l_out.write(str(e) + "\n")
 
             response = "resource limitations"
@@ -70,7 +70,7 @@ def download_and_check(uri: str):
 
     response = response.replace(outline_link, "../outline.html")
 
-    with open(path, "w") as f_out:
+    with open(path, "w", encoding="utf-8") as f_out:
         f_out.write(response)
 
 
@@ -127,7 +127,7 @@ def fetch_story(uri: str):
     if not os.path.exists(base):
         os.makedirs(base + "/chapters")
     # TODO implement basic logging mechanics
-    with open(base + "/log.txt", "w") as l_out:
+    with open(base + "/log.txt", "w", encoding="utf-8") as l_out:
         l_out.write(base + " start\n")
 
     begin = s.get(uri).text
@@ -139,7 +139,7 @@ def fetch_story(uri: str):
     global outline_link
     outline_link = convert_html("//a/@href", temp, "/outline")[0]
 
-    with open(base + "/begin.html", "w") as begin_out:
+    with open(base + "/begin.html", "w", encoding="utf-8") as begin_out:
         begin_out.write(replace_uris(begin, entry))
 
     outline = s.get(outline_link).text
@@ -151,7 +151,7 @@ def fetch_story(uri: str):
     for chapter in chapter_list:
         outline = replace_uris(outline, chapter)
 
-    with open(base + "/outline.html", "w") as outline_out:
+    with open(base + "/outline.html", "w", encoding="utf-8") as outline_out:
         outline_out.write(outline)
 
     # multiprocess it because why not
